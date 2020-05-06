@@ -1,6 +1,5 @@
 # dtz
-dtz is simple shell script for managing dots (dotfiles)
-This repo also contains my dotfiles used to set up an archlinux desktop system.
+dtz is simple shell script for managing dots (dotfiles). Mine can be found in this repository.
 
 Other programs
 --------------
@@ -15,3 +14,4 @@ Requirements
 ##### TODO
 * [ ] add/remove package
 * [ ] dtz -a init.vim neovim
+* [ ] zsh autocompletion
