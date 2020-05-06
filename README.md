@@ -15,3 +15,4 @@ Requirements
 * [ ] add/remove package
 * [ ] dtz -a init.vim neovim
 * [ ] zsh autocompletion
+* [ ] make a generic makefile installer (suckless)
