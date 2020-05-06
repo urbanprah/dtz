@@ -1,0 +1,99 @@
+#!/bin/sh
+
+# README
+# ======
+# dtz will use program's name which indicates should correspond
+# to the directory containing the program's configuration.
+#
+# syntax: ["<program>"]="<destination>"
+#
+# If the destination path is empty, dtz will look for 'Makefile'
+# inside the program's directory and try to 'make install|uninstall'
+#
+# Examples:
+# ['neovim']='$XDG_CONFIG_HOME/nvim'
+# ['ncmpcpp']=''
+#
+# neovim/
+#    init.vim
+# ncmpcpp/
+#    Makefile
+#    example.conf
+
+declare -A LINKS=(
+        [neovim]=""
+)
+
+DIR="$(dirname "$(realpath $0)")"
+PACKAGES="$DIR/packages"
+AUR_HELPER='yay'
+
+_usage() {
+        echo "Usage: $0 [OPTION]... [FILE]...
+
+Description:
+        'dtz' is a utility script for dots (dotfiles) management.
+        It installs packages specified in <packages> and uses <links> to install or link programs.
+        See links.sh for more info about how linking works.
+
+        Options:
+        -l <program>,              links specified program
+        -L,                        links all programs
+        -u <program>,              unlinks specified program
+        -U,                        unlinks all programs
+        -a <package>,              adds package to packages and installes it
+        -r <package>,              removes package from packages and uninstalls it
+        -i,                        installs packages
+        -h,                        prints usage
+        " 1>&2; exit 1
+}
+
+_handler() {
+        [ "$1" == "unlink" ] && make_cmd="uninstall" || make_cmd="install"
+        [ -z "$2" ] && progs=${!LINKS[@]} || progs="$2"
+
+        for prog in $progs; do
+                [ ! -e "$DIR/$prog" ] && echo "No such program as '$prog'" && return 1
+                path=${LINKS[$prog]}
+                if [[ -z "$path" ]]; then
+                        cd "$DIR/$prog"
+                        [ ! -e "Makefile" ] && echo 'No Makefile found' && return 1
+			echo "Using custom "$make_cmd"er for '$prog'"
+                        make "$make_cmd"
+                elif [[ "$1" == "unlink" ]]; then
+                        cd "$DIR/$prog"
+                        for file in $(find . -maxdepth 1 | sed '1d'); do
+				link="$path/$(cut -c 3- <<< $file)"
+				echo "Removing link: $link"
+                                unlink "$link";
+                        done
+                else
+                        mkdir -pv "$path"
+                        for link in $(find "$DIR/$prog" -maxdepth 1 | sed '1d'); do
+				echo "Creating link: $link -> $path"
+                                ln -sf "$link" "$path";
+                        done
+                fi
+                [ $? -ne 0 ] && echo "Linking failed for '$prog'" && return 1
+        done
+}
+
+_unlink_prompt() {
+	echo "Are you sure you want to unlink $1? (yes/no)"
+	read ans
+	[ "$ans" == 'yes' ] || return 1
+}
+
+while getopts ":LUihl:u:a:r:" f; do
+        case "${f}" in
+                L) _handler "link" ;;
+                l) _handler "link" ${OPTARG} ;;
+                U) _unlink_prompt "all links" && _handler "unlink" ;;
+		u) _unlink_prompt "${OPTARG}" && _handler "unlink" "${OPTARG}" ;;
+                i) [ -e "$PACKAGES" ] && $AUR_HELPER -S --needed - < $PACKAGES ;;
+                a);;
+                r);;
+                h | *) _usage ;;
+        esac
+done
+[ $# -eq 0 ] && [ -e "$PACKAGES" ] && $AUR_HELPER -S --needed - < $PACKAGES && _handler "link"
