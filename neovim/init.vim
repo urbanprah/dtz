@@ -12,17 +12,24 @@
 "
 " General
 " =======
-let mapleader = " "
+let mapleader = ' '
 syntax on
 set encoding=utf-8
 set clipboard+=unnamedplus
+set spell spelllang=en_us,sl_si
+
 
 " Plugins
 " =======
 call plug#begin('$HOME/.config/nvim/plugged')
 " Extended functionality
 Plug 'tpope/vim-surround'
-Plug 'junegunn/fzf.vim'
+"Plug 'svermeulen/vim-yoink' " delete goes to blackhole buffer
+"Plug 'svermeulen/vim-cutlass' " yank history
+"Plug 'svermeulen/vim-subversive' " visual select -> replace all matches
+"Plug '/glts/vim-radical' " quick number conversion (dec/hex/oct/bin)
+Plug 'tpope/vim-repeat'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'liuchengxu/vista.vim' " Can YCM do LSP symbols? -> coc.vim
 "Plug 'ycm-core/YouCompleteMe'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'} " --> YCM
@@ -48,6 +55,7 @@ Plug 'gko/vim-coloresque'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
+
 " Behaviour
 " =========
 " Enable mouse in normal mode
@@ -68,6 +76,7 @@ autocmd InsertEnter * norm zz
 " Remove trailing whitespace on write
 autocmd BufWritePre * %s/\s\+$//e
 
+
 " Keymap
 " ======
 " Toggle Auto Comment, Indentation
@@ -75,12 +84,9 @@ map <leader>c :setlocal formatoptions-=cro<CR>
 map <leader>C :setlocal formatoptions=cro<CR>
 map <leader>i :setlocal autoindent<CR>
 map <leader>I :setlocal noautoindent<CR>
-" Spell checker (z= to show corrections)
-map <leader>s :setlocal spell! spelllang=en_us<CR>
-map <leader>S :setlocal spell! spelllang=sl_si<CR>
 " Quick substitution
-nnoremap S :%s//g<Left><Left>
-vnoremap S :s//g<Left><Left>
+noremap <C-s> :%s//g<Left><Left>
+vnoremap <C-S-s> :s//g<Left><Left>
 " Split navigation
 map <C-h> <C-w>h
 map <C-j> <C-w>j
@@ -90,6 +96,7 @@ map <C-l> <C-w>l
 "nnoremap <leader>h :vsp<Space>
 " Clear highlighted text
 nnoremap <F3> :set hlsearch!<CR>
+
 
 " Appearance
 " ==========
@@ -105,29 +112,21 @@ highlight VertSplit ctermbg=1 ctermfg=1
 highlight SignColumn ctermbg=0
 highlight Visual ctermbg=10
 
+
 " Plugin configuration
 " ====================
 
-" markdown-preview
-" ----------------
-let g:mkdp_auto_start = 1
-let g:mkdp_auto_close = 1
-let g:mkdp_refresh_slow = 0
-let g:mkdp_command_for_global = 1
-let g:mkdp_open_to_the_world = 0
-let g:mkdp_open_ip = ''
-let g:mkdp_browser = ''
-let g:mkdp_echo_preview_url = 0
-let g:mkdp_browserfunc = ''
-let g:mkdp_markdown_css = ''
-let g:mkdp_highlight_css = ''
-let g:mkdp_port = ''
-let g:mkdp_page_title = '「${name}」'
+" surround
+" --------
+nmap <leader>s ysiw
+nmap <leader><S-s> yss
 
-" airline
-" -------
-let g:airline_theme = 'deus'
 
+" repeat
+" ------
+" fzf
+" TODO
+" ---
 " vista
 " -----
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
@@ -155,3 +154,39 @@ function! NearestMethodOrFunction() abort
 endfunction
 set statusline+=%{NearestMethodOrFunction()}
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
+
+" markdown-preview
+" ----------------
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+" Markdown preview available for all filetypes
+let g:mkdp_command_for_global = 1
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = ''
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = 'nvim - ${name}'
+nmap <leader>m <Plug>MarkdownPreview
+nmap <leader><S-m> <Plug>StopMarkdownPreview
+
+
+" colorschemes
+" ------------
+" airline
+" -------
+let g:airline_theme = 'deus'
+" TODO
+
+
+" wal
+" ---
+" coloresque
+" ----------
+" vim-devicons
+" ------------
