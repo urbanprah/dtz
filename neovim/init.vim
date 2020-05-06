@@ -1,22 +1,52 @@
 "
-"███▒   █▓ ██▓ ███▄ ▄███▓ ██▀███   ▄████▄
-"▓██░   █▒▓██▒▓██▒▀█▀ ██▒▓██ ▒ ██▒▒██▀ ▀█
-" ▓██  █▒░▒██▒▓██    ▓██░▓██ ░▄█ ▒▒▓█    ▄
-"  ▒██ █░░░██░▒██    ▒██ ▒██▀▀█▄  ▒▓▓▄ ▄██▒
-"   ▒▀█░  ░██░▒██▒   ░██▒░██▓ ▒██▒▒ ▓███▀ ░
-"   ░ ▐░  ░▓  ░ ▒░   ░  ░░ ▒▓ ░▒▓░░ ░▒ ▒  ░
-"   ░ ░░   ▒ ░░  ░      ░  ░▒ ░ ▒░  ░  ▒
-"     ░░   ▒ ░░      ░     ░░   ░ ░
-"      ░   ░         ░      ░     ░ ░
-"     ░                           ░
+" ███▒   █▓ ██▓ ███▄ ▄███▓ ██▀███   ▄████▄
+" ▓██░   █▒▓██▒▓██▒▀█▀ ██▒▓██ ▒ ██▒▒██▀ ▀█
+"  ▓██  █▒░▒██▒▓██    ▓██░▓██ ░▄█ ▒▒▓█    ▄
+"   ▒██ █░░░██░▒██    ▒██ ▒██▀▀█▄  ▒▓▓▄ ▄██▒
+"    ▒▀█░  ░██░▒██▒   ░██▒░██▓ ▒██▒▒ ▓███▀ ░
+"    ░ ▐░  ░▓  ░ ▒░   ░  ░░ ▒▓ ░▒▓░░ ░▒ ▒  ░
+"    ░ ░░   ▒ ░░  ░      ░  ░▒ ░ ▒░  ░  ▒
+"      ░░   ▒ ░░      ░     ░░   ░ ░
+"       ░   ░         ░      ░     ░ ░
+"      ░                           ░
 "
 " General
 " =======
-let mapleader=" "
+let mapleader = " "
 syntax on
 set encoding=utf-8
 set clipboard+=unnamedplus
 
+" Plugins
+" =======
+call plug#begin('$HOME/.config/nvim/plugged')
+" Extended functionality
+Plug 'tpope/vim-surround'
+Plug 'junegunn/fzf.vim'
+Plug 'liuchengxu/vista.vim' " Can YCM do LSP symbols? -> coc.vim
+"Plug 'ycm-core/YouCompleteMe'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'} " --> YCM
+"Plug 'lifepillar/vim-mucomplete' " --> YCM | built-in completion
+"Plug 'scrooloose/nerdtree' " --> netrw | system file manager in tmux
+"Plug 'KabbAmine/vCoolor.vim' " --> system color picker
+
+" Filetype specific
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+"Plug 'myhere/vim-nodejs-complete'
+
+" Miscellaneous
+"Plug 'mhinz/vim-startify'
+"
+" Appearance
+Plug 'flazz/vim-colorschemes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'dylanaraps/wal.vim'
+Plug 'gko/vim-coloresque'
+"Plug 'junegunn/goyo.vim'
+"Plug 'junegunn/limelight.vim'
+Plug 'ryanoasis/vim-devicons'
+call plug#end()
 
 " Behaviour
 " =========
@@ -37,7 +67,6 @@ set splitbelow splitright
 autocmd InsertEnter * norm zz
 " Remove trailing whitespace on write
 autocmd BufWritePre * %s/\s\+$//e
-
 
 " Keymap
 " ======
@@ -62,12 +91,11 @@ map <C-l> <C-w>l
 " Clear highlighted text
 nnoremap <F3> :set hlsearch!<CR>
 
-
 " Appearance
 " ==========
 set number relativenumber
-"set termguicolors
-"colorscheme nord
+set termguicolors
+colorscheme nord
 set cursorline
 "set cursorcolumn
 "highlight CursorLine ctermbg=Green cterm=bold
@@ -76,38 +104,6 @@ highlight FoldColumn ctermbg=0 ctermfg=0
 highlight VertSplit ctermbg=1 ctermfg=1
 highlight SignColumn ctermbg=0
 highlight Visual ctermbg=10
-
-
-" Plugins
-" =======
-call plug#begin('$HOME/.config/nvim/plugged')
-        " Appearance
-        Plug 'flazz/vim-colorschemes'
-        Plug 'vim-airline/vim-airline'
-        Plug 'vim-airline/vim-airline-themes'
-        Plug 'ryanoasis/vim-devicons'
-        Plug 'dylanaraps/wal.vim'
-        Plug 'gko/vim-coloresque'
-        "Plug 'junegunn/goyo.vim'
-        "Plug 'junegunn/limelight.vim'
-
-        " Extended functionality
-        Plug 'tpope/vim-surround'
-        Plug 'junegunn/fzf.vim'
-        Plug 'liuchengxu/vista.vim'
-        "Plug 'ycm-core/YouCompleteMe'
-        "Plug 'neoclide/coc.nvim', {'branch': 'release'} " --> YCM
-        "Plug 'lifepillar/vim-mucomplete' " --> YCM | built-in completion
-        "Plug 'scrooloose/nerdtree' " --> netrw | system file manager in tmux
-        "Plug 'KabbAmine/vCoolor.vim' " --> system color picker
-
-        " Filetype specific
-        Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-        "Plug 'myhere/vim-nodejs-complete'
-
-        " Miscellaneous
-        "Plug 'mhinz/vim-startify'
-call plug#end()
 
 " Plugin configuration
 " ====================
@@ -127,3 +123,35 @@ let g:mkdp_markdown_css = ''
 let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
+
+" airline
+" -------
+let g:airline_theme = 'deus'
+
+" vista
+" -----
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_fzf_preview = ['right:50%']
+" Custom ucons
+let g:vista#renderer#icons = {
+                        \   "function": "\uf794",
+                        \   "variable": "\uf71b",
+                        \  }
+let g:vista#renderer#enable_icon = 1
+" Available executives: ['ale', 'coc', 'ctags', 'lcn', 'nvim_lsp', 'vim_lsc', 'vim_lsp']
+let g:vista_default_executive = 'ctags'
+" Explicit executive specification
+let g:vista_executive_for = {
+                        \ 'c': 'ctags',
+                        \ 'php': 'nvim_lsp',
+                        \ }
+" Custom ctags commands
+let g:vista_ctags_cmd = {
+      \ 'haskell': 'hasktags -x -o - -c',
+      \ }
+" Show nearest method in statusline
+function! NearestMethodOrFunction() abort
+        return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+set statusline+=%{NearestMethodOrFunction()}
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
