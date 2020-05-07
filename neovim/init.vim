@@ -16,6 +16,7 @@ let mapleader = ' '
 syntax on
 set encoding=utf-8
 set clipboard+=unnamedplus
+set nofixeol
 "set spell spelllang=en_us,sl_si
 " coc TODO
 "set hidden
@@ -48,8 +49,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'} "
 "Plug 'KabbAmine/vCoolor.vim' " --> system color picker
 "Plug 'terryma/vim-multiple-cursors'
 "Plug 'easymotion/vim-easymotion' " Big meh
-"Some git plugin TODO
-"Some code commenting plugin TODO
+"Plug 'tpope/vim-fugitive' # TODO
+Plug 'tpope/vim-commentary'
+"Plug 'tpope/vim-classpath' " JVM languages path (gf, :find)
+"Plug 'tpope/vim-capslock' " virtual CAPSLOCK (esc, CAPSLOCK)
 
 " Filetype specific
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -91,7 +94,15 @@ set wildmode=longest,list,full
 set splitbelow splitright
 " Center cursor on insert mode
 autocmd InsertEnter * norm zz
-" Remove trailing whitespace on write
+" Remove trailing whitespace, lines on write
+function TrimTrailingLines()
+        let lastLine = line('$')
+        let lastNonblankLine = prevnonblank(lastLine)
+        if lastLine > 0 && lastNonblankLine != lastLine
+                silent! execute lastNonblankLine + 2 . ',$delete _'
+        endif
+endfunction
+autocmd BufWritePre <buffer> call TrimTrailingLines()
 autocmd BufWritePre * %s/\s\+$//e
 
 
@@ -294,6 +305,11 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "nnoremap <silent> <;>p  :<C-u>CocListResume<CR>
 
 
+" comentary
+" ---------
+autocmd FileType apache setlocal commentstring=#\ %s
+
+
 " markdown-preview
 " ----------------
 let g:mkdp_auto_start = 0
@@ -339,6 +355,7 @@ let g:Hexokinase_refreshEvents = [ 'BufRead', 'TextChanged' ]
 
 " kite " extremely fast python completion
 " ----
-set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
-set laststatus=2  " always display the status line
-let g:kite_auto_complete=1
+"set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
+"set laststatus=2  " always display the status line
+"let g:kite_auto_complete=1
+
