@@ -18,13 +18,13 @@ set encoding=utf-8
 set clipboard+=unnamedplus
 set spell spelllang=en_us,sl_si
 " coc TODO
-set hidden
-set nobackup
-set nowritebackup
-set cmdheight=2
-set updatetime=300
-set shortmess+=c
-set signcolumn=yes
+"set hidden
+"set nobackup
+"set nowritebackup
+"set cmdheight=2
+"set updatetime=300
+"set shortmess+=c
+"set signcolumn=yes
 
 
 " Plugins
@@ -117,6 +117,7 @@ nnoremap <F3> :set hlsearch!<CR>
 " ==========
 set number relativenumber
 set termguicolors
+set t_Co=256
 colorscheme nord
 set cursorline
 "set cursorcolumn
@@ -315,6 +316,7 @@ nmap <leader><S-m> <Plug>StopMarkdownPreview
 " ------------
 " airline
 " -------
+let g:airline_powerline_fonts = 1
 let g:airline_theme = 'deus'
 let g:airline#extensions#tabline#enabled = 1
 " TODO
