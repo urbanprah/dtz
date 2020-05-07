@@ -7,10 +7,11 @@ uninstall:
 	rm -rf "$(CONFIGDIR)" "$(COCDIR)"
 
 dependencies:
-	yay --needed -S git neovim ruby python yarn nodejs npm nerd-fonts-complete ctags xdotool brave-bin
+	yay --needed --noconfirm -S git neovim ruby python yarn nodejs npm ctags xdotool
 	gem install neovim
 
 config:
+	mkdir -pv $(CONFIGDIR)
 	ln -sf $(PWD)/init.vim $(CONFIGDIR)/init.vim
 
 plug:
@@ -18,8 +19,10 @@ plug:
 	nvim +'PlugUpgrade | PlugInstall | PlugUpdate | PlugClean! | :qa!'
 
 coc:
-	mkdir -pv $(COCDIR)/extensions
-	ln -sf $(PWD)/coc.json $(COCDIR)/extensions/package.json
-	cd $(COCDIR)/extensions
-	npm install coc-snippets --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
+	mkdir -pv "$(COCDIR)/extensions"
+	ln -sf "$(PWD)/coc.json" "$(COCDIR)/extensions/package.json"
+	cd $(COCDIR)/extensions/ ; \
+		npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
 
+#https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
+#coc-spell-checker

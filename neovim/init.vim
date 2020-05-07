@@ -32,6 +32,7 @@ set signcolumn=yes
 call plug#begin('$HOME/.config/nvim/plugged')
 " Extended functionality
 Plug 'tpope/vim-surround'
+"Plug 'machakann/vim-sandwich' --> different surround implementation
 "Plug 'svermeulen/vim-yoink' " delete goes to blackhole buffer
 "Plug 'svermeulen/vim-cutlass' " yank history
 "Plug 'svermeulen/vim-subversive' " visual select -> replace all matches
@@ -43,7 +44,12 @@ Plug 'liuchengxu/vista.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "
 "Plug 'lifepillar/vim-mucomplete' " --> YCM | built-in completion
 "Plug 'scrooloose/nerdtree' " --> netrw | system file manager in tmux
+"Plug 'Shougo/defx.nvim' " --> alternative to nerdtree
 "Plug 'KabbAmine/vCoolor.vim' " --> system color picker
+"Plug 'terryma/vim-multiple-cursors'
+"Plug 'easymotion/vim-easymotion' " Big meh
+"Some git plugin TODO
+"Some code commenting plugin TODO
 
 " Filetype specific
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -283,7 +289,6 @@ nnoremap <silent> <;>j  :<C-u>CocNext<CR>
 nnoremap <silent> <;>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <;>p  :<C-u>CocListResume<CR>
-
 
 
 " markdown-preview
