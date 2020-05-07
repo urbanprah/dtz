@@ -112,6 +112,7 @@ map <C-l> <C-w>l
 "nnoremap <leader>h :vsp<Space>
 " Clear highlighted text
 nnoremap <F3> :set hlsearch!<CR>
+nnoremap <leader>p :copen<CR>
 
 
 " Appearance
@@ -329,6 +330,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:Hexokinase_highlighters = [ 'virtual' ]
 " Patterns: full_hex, triple_hex, rgb, rgba, hsl, hsla, colour_names
 let g:Hexokinase_optInPatterns = 'full_hex,triple_hex,rgb,rgba,hsl,hsla,colour_names'
+let g:Hexokinase_refreshEvents = [ 'BufRead', 'TextChanged' ]
 
 " ----------
 " vim-devicons
