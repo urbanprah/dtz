@@ -22,6 +22,7 @@
 
 declare -A LINKS=(
         [neovim]=""
+        [suckless]=""
 )
 
 DIR="$(dirname "$(realpath $0)")"
@@ -84,6 +85,24 @@ _unlink_prompt() {
 	[ "$ans" == 'yes' ] || return 1
 }
 
+_package() {
+        [ "$1" == "remove" ] && remove=1 || remove=0
+        [ $remove -eq 0 ] && cmd="-S" || cmd="-Rsn"
+        package="$2"
+        exists="$(grep -x "$package" "$PACKAGES")"
+
+        [ -z "$exists" ] && [ $remove -eq 1 ] && echo "'$package' cannot be found in $PACKAGES" && return 1
+        [ -n "$exists" ] && [ $remove -eq 0 ] && echo -e "'$package' already defined in $PACKAGES\nWish to install anyway? (yes/no)" && read ans && [ "$ans" != "yes" ] && return 1
+
+        $AUR_HELPER $cmd $package
+        status=$?
+
+        [ $status -eq 0 ] && [ $remove -eq 1 ] && sed "/$package/d" "$PACKAGES" > "$PACKAGES"
+        [ $status -eq 0 ] && [ $remove -eq 0 ] && [ -z $exists ] && echo "$package" >> $PACKAGES
+        [ $status -ne 0 ] && "Installation failed for '$package'" && return 1
+}
+
+
 while getopts ":LUihl:u:a:r:" f; do
         case "${f}" in
                 L) _handler "link" ;;
@@ -91,8 +110,8 @@ while getopts ":LUihl:u:a:r:" f; do
                 U) _unlink_prompt "all links" && _handler "unlink" ;;
 		u) _unlink_prompt "${OPTARG}" && _handler "unlink" "${OPTARG}" ;;
                 i) [ -e "$PACKAGES" ] && $AUR_HELPER -S --needed - < $PACKAGES ;;
-                a);;
-                r);;
+                a) _package "add" "${OPTARG}" ;;
+                r) _package "remove" "${OPTARG}";;
                 h | *) _usage ;;
         esac
 done
