@@ -7,7 +7,7 @@ uninstall:
 	rm -rf "$(CONFIGDIR)" "$(COCDIR)"
 
 dependencies:
-	yay --needed --noconfirm -S git neovim ruby python yarn nodejs npm ctags xdotool
+	yay --needed --noconfirm -S git neovim ruby python yarn nodejs npm xdotool ctags clang
 	gem install neovim
 
 config:
@@ -21,6 +21,7 @@ plug:
 coc:
 	mkdir -pv "$(COCDIR)/extensions"
 	ln -sf "$(PWD)/coc.json" "$(COCDIR)/extensions/package.json"
+	ln -sf "$(PWD)/coc-settings.json" "$(CONFIGDIR)"
 	cd $(COCDIR)/extensions/ ; \
 		npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
 
