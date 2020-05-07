@@ -16,7 +16,7 @@ let mapleader = ' '
 syntax on
 set encoding=utf-8
 set clipboard+=unnamedplus
-set spell spelllang=en_us,sl_si
+"set spell spelllang=en_us,sl_si
 " coc TODO
 "set hidden
 "set nobackup
@@ -63,8 +63,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'dylanaraps/wal.vim'
-Plug 'gko/vim-coloresque'
-"Plug 'RRethy/vim-hexokinase' " More configurable color preview
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 "Plug 'junegunn/goyo.vim'
 "Plug 'junegunn/limelight.vim'
 Plug 'ryanoasis/vim-devicons'
@@ -77,6 +76,10 @@ call plug#end()
 set mouse=n
 set smartindent
 "set cindent
+" Disable auto comment
+autocmd FileType * setlocal formatoptions-=cro
+
+
 " Tabs
 set expandtab
 set shiftwidth=8
@@ -94,11 +97,9 @@ autocmd BufWritePre * %s/\s\+$//e
 
 " Keymap
 " ======
-" Toggle Auto Comment, Indentation
-map <leader>c :setlocal formatoptions-=cro<CR>
-map <leader>C :setlocal formatoptions=cro<CR>
-map <leader>i :setlocal autoindent<CR>
-map <leader>I :setlocal noautoindent<CR>
+" Toggle Auto Comment
+map <leader><S-c> :setlocal formatoptions-=cro<CR>
+map <leader>c :setlocal formatoptions=cro<CR>
 " Quick substitution
 noremap <C-s> :%s//g<Left><Left>
 vnoremap <C-S-s> :s//g<Left><Left>
@@ -189,7 +190,7 @@ function! s:check_back_space() abort
 endfunction
 
 " Trigger completion.
-inoremap <silent><expr> <leader>c coc#refresh()
+inoremap <silent><expr> <C-c> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
@@ -275,21 +276,21 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "
 " Mappings using CoCList:
 " Show all diagnostics.
-nnoremap <silent> <;>a  :<C-u>CocList diagnostics<cr>
+"nnoremap <silent> <;>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent> <;>e  :<C-u>CocList extensions<cr>
+"nnoremap <silent> <;>e  :<C-u>CocList extensions<cr>
 " Show commands.
-nnoremap <silent> <;>c  :<C-u>CocList commands<cr>
+"nnoremap <silent> <;>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
-nnoremap <silent> <;>o  :<C-u>CocList outline<cr>
+"nnoremap <silent> <;>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent> <;>s  :<C-u>CocList -I symbols<cr>
+"nnoremap <silent> <;>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <;>j  :<C-u>CocNext<CR>
+"nnoremap <silent> <;>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <;>k  :<C-u>CocPrev<CR>
+"nnoremap <silent> <;>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent> <;>p  :<C-u>CocListResume<CR>
+"nnoremap <silent> <;>p  :<C-u>CocListResume<CR>
 
 
 " markdown-preview
@@ -323,7 +324,12 @@ let g:airline#extensions#tabline#enabled = 1
 
 " wal
 " ---
-" coloresque
+" hexokinase
+" Highliters: virtual, sign_column, background, backgroundfull, foreground, foregroundfull
+let g:Hexokinase_highlighters = [ 'virtual' ]
+" Patterns: full_hex, triple_hex, rgb, rgba, hsl, hsla, colour_names
+let g:Hexokinase_optInPatterns = 'full_hex,triple_hex,rgb,rgba,hsl,hsla,colour_names'
+
 " ----------
 " vim-devicons
 " ------------
@@ -331,6 +337,6 @@ let g:airline#extensions#tabline#enabled = 1
 
 " kite " extremely fast python completion
 " ----
-"set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
-"set laststatus=2  " always display the status line
-"let g:kite_auto_complete=1
+set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
+set laststatus=2  " always display the status line
+let g:kite_auto_complete=1
