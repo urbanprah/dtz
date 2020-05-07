@@ -7,10 +7,6 @@ Other programs
 * statusbar: [dwmblocks](https://github.com/urbanprah/dwmlocks)
 * menu: [dmenu](https://github.com/urbanprah/dmenu)
 
-Requirements
-------------
-* make
-
 ##### TODO
 * [ ] add/remove package
 * [ ] dtz -a init.vim neovim

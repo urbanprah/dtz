@@ -44,6 +44,8 @@ Description:
         -U,                        unlinks all programs
         -a <package>,              adds package to packages and installes it
         -r <package>,              removes package from packages and uninstalls it
+        -n <program> <file>,       moves new <file> to <program>, creates a symbolic link
+        -A,                        all (installs packages, links all progams)
         -i,                        installs packages
         -h,                        prints usage
         " 1>&2; exit 1
@@ -86,6 +88,7 @@ _unlink_prompt() {
 }
 
 _package() {
+        [ ! -e "$PACKAGES" ] && echo "'$PACKAGES' not found" && return 1
         [ "$1" == "remove" ] && remove=1 || remove=0
         [ $remove -eq 0 ] && cmd="-S" || cmd="-Rsn"
         package="$2"
@@ -102,17 +105,24 @@ _package() {
         [ $status -ne 0 ] && "Installation failed for '$package'" && return 1
 }
 
+_install() {
+        [ ! -e "$PACKAGES" ] && echo "'$PACKAGES' not found" || $AUR_HELPER -S --needed - < "$PACKAGES"
+}
 
-while getopts ":LUihl:u:a:r:" f; do
+
+while getopts ":LUihAl:u:a:r:n::" f; do
         case "${f}" in
                 L) _handler "link" ;;
                 l) _handler "link" ${OPTARG} ;;
                 U) _unlink_prompt "all links" && _handler "unlink" ;;
 		u) _unlink_prompt "${OPTARG}" && _handler "unlink" "${OPTARG}" ;;
-                i) [ -e "$PACKAGES" ] && $AUR_HELPER -S --needed - < $PACKAGES ;;
+                i) _install ;;
+                A) _install && _handler "link" ;;
                 a) _package "add" "${OPTARG}" ;;
                 r) _package "remove" "${OPTARG}";;
+                n) echo 'Not implemented ${OPTARG}' ;;
                 h | *) _usage ;;
         esac
 done
-[ $# -eq 0 ] && [ -e "$PACKAGES" ] && $AUR_HELPER -S --needed - < $PACKAGES && _handler "link"
+[ $# -eq 0 ] && _handler "link"
+
