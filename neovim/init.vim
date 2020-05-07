@@ -94,17 +94,19 @@ set wildmode=longest,list,full
 set splitbelow splitright
 " Center cursor on insert mode
 autocmd InsertEnter * norm zz
-" Remove trailing whitespace, lines on write
+" Remove trailing whitespace, blank lines on write
 function TrimTrailingLines()
-        let lastLine = line('$')
-        let lastNonblankLine = prevnonblank(lastLine)
-        if lastLine > 0 && lastNonblankLine != lastLine
-                silent! execute lastNonblankLine + 2 . ',$delete _'
-        endif
+    let save_cursor = getpos(".")
+    let lastLine = line('$')
+    let lastNonblankLine = prevnonblank(lastLine)
+    if lastLine > 0 && lastNonblankLine != lastLine
+            silent! execute lastNonblankLine + 1 . ',$delete _'
+    endif
+    execute '$norm o'
+    call setpos('.', save_cursor)
 endfunction
-autocmd BufWritePre <buffer> call TrimTrailingLines()
+autocmd BufWritePre * call TrimTrailingLines()
 autocmd BufWritePre * %s/\s\+$//e
-
 
 " Keymap
 " ======
