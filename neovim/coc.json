@@ -6,6 +6,7 @@
     "coc-java": ">=1.4.10",
     "coc-json": ">=1.2.5",
     "coc-omnisharp": ">=0.0.26",
+    "coc-pyright": ">=1.1.35",
     "coc-snippets": ">=2.1.26",
     "coc-svg": ">=0.0.13",
     "coc-tsserver": ">=1.5.1"

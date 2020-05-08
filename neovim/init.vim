@@ -17,6 +17,7 @@ syntax on
 set encoding=utf-8
 set clipboard+=unnamedplus
 set nofixeol
+set nocompatible
 "set spell spelllang=en_us,sl_si
 " coc TODO
 "set hidden
@@ -26,6 +27,8 @@ set nofixeol
 "set updatetime=300
 "set shortmess+=c
 "set signcolumn=yes
+" Swapdir
+set directory=~/.cache/nvim/
 
 
 " Plugins
@@ -56,6 +59,7 @@ Plug 'tpope/vim-commentary'
 
 " Filetype specific
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+"Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 "Plug 'myhere/vim-nodejs-complete'
 
 " Miscellaneous
@@ -79,10 +83,15 @@ call plug#end()
 set mouse=n
 set smartindent
 "set cindent
+" Lines above/below cursor when scrolling
+set scrolloff=0
 " Disable auto comment
 autocmd FileType * setlocal formatoptions-=cro
-
-
+" Preserve cursor position on quit
+autocmd BufReadPost *
+	\ if line("'\"") > 1 && line("'\"") <= line("$") |
+	\   exe "normal! g`\"" |
+	\ endif
 " Tabs
 set expandtab
 set shiftwidth=8
@@ -95,18 +104,16 @@ set splitbelow splitright
 " Center cursor on insert mode
 autocmd InsertEnter * norm zz
 " Remove trailing whitespace, blank lines on write
-function TrimTrailingLines()
-    let save_cursor = getpos(".")
-    let lastLine = line('$')
-    let lastNonblankLine = prevnonblank(lastLine)
-    if lastLine > 0 && lastNonblankLine != lastLine
-            silent! execute lastNonblankLine + 1 . ',$delete _'
-    endif
-    execute '$norm o'
-    call setpos('.', save_cursor)
+function! <SID>StripTrailingWhitespaces()
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    0;/^\%(\_s*\S\)\@!/,$d
+    let @/=_s
+    call cursor(l, c)
 endfunction
-autocmd BufWritePre * call TrimTrailingLines()
-autocmd BufWritePre * %s/\s\+$//e
+autocmd BufWritePre * silent! call <SID>StripTrailingWhitespaces()
 
 " Keymap
 " ======
@@ -305,6 +312,9 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "nnoremap <silent> <;>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 "nnoremap <silent> <;>p  :<C-u>CocListResume<CR>
+" TODO
+"https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
+"coc-spell-checker
 
 
 " comentary
@@ -314,7 +324,7 @@ autocmd FileType apache setlocal commentstring=#\ %s
 
 " markdown-preview
 " ----------------
-let g:mkdp_auto_start = 0
+let g:mkdp_auto_start = 1
 let g:mkdp_auto_close = 1
 let g:mkdp_refresh_slow = 0
 " Markdown preview available for all filetypes
@@ -360,4 +370,3 @@ let g:Hexokinase_refreshEvents = [ 'BufRead', 'TextChanged' ]
 "set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
 "set laststatus=2  " always display the status line
 "let g:kite_auto_complete=1
-
