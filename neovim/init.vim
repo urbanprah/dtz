@@ -123,16 +123,20 @@ map <leader>c :setlocal formatoptions=cro<CR>
 " Quick substitution
 noremap <C-s> :%s//g<Left><Left>
 vnoremap <C-S-s> :s//g<Left><Left>
-" Split navigation
+" Split navigation, resize, swap
+nnoremap <silent> <C-Right> :vertical resize +3<CR>
+nnoremap <silent> <C-Left> :vertical resize -3<CR>
+nnoremap <silent> <C-Up> :resize +3<CR>
+nnoremap <silent> <C-Down> :resize -3<CR>
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-"nnoremap <leader>j :sp<Space>
-"nnoremap <leader>h :vsp<Space>
 " Clear highlighted text
 nnoremap <F3> :set hlsearch!<CR>
 nnoremap <leader>p :copen<CR>
+" Terminal inside vim
+map <leader>tt :vnew term://zsh<CR>
 
 
 " Appearance
@@ -281,8 +285,10 @@ omap af <Plug>(coc-funcobj-a)
 " Use <TAB> for selections ranges.
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
 " coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
+" FIXME: disables <C-i> navigation
+"nmap <silent> <TAB> <Plug>(coc-range-select)
+"xmap <silent> <TAB> <Plug>(coc-range-select)
+
 
 " Add `:Format` command to format current buffer.
 "command! -nargs=0 Format :call CocAction('format')
