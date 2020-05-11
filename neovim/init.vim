@@ -10,49 +10,7 @@
 "       ░   ░         ░      ░     ░ ░
 "      ░                           ░
 "
-" Behavior
-" ========
-let mapleader = ' '
-syntax on
-set encoding=utf-8
-set nocompatible
-set spell spelllang=en_us,sl_si
-set directory=~/.cache/nvim/ " Swap directory
-set clipboard+=unnamedplus " Use system clipboard
-set updatetime=300 " Swap write interval [ms]
-set shortmess+=c " Don't pass messages to ins-completion-menu
-set hidden " Hide buffer
-set smartcase
-set mouse=n " Enable mouse in normal mode
-set cindent " smartindent
-set scrolloff=0 " Lines above/below cursor when scrolling
-autocmd FileType * setlocal formatoptions-=cro " Disable auto comment
-" Preserve cursor position
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |
-                        \ exe "normal! g`\"" | endif
-" Tabs
-" Number of spaces in a tab
-set expandtab " Spaces instead of tabs
-set shiftwidth=8
-set softtabstop=8
-set tabstop=8
-set wildmode=longest,list,full " :Command tab completion
-set splitbelow splitright " Splits open where you would expect them to
-" Center cursor on insert mode
-autocmd InsertEnter * norm zz
-" Remove trailing whitespace, blank lines on write
-function! <SID>StripTrailingWhitespaces()
-        let _s=@/
-        let l = line(".")
-        let c = col(".")
-        %s/\s\+$//e
-        0;/^\%(\_s*\S\)\@!/,$d
-        let @/=_s
-        call cursor(l, c)
-endfunction
-autocmd BufWritePre * silent! call <SID>StripTrailingWhitespaces()
-
-
+"
 " Plug-ins
 " ========
 call plug#begin('$HOME/.config/nvim/plugged')
@@ -98,6 +56,56 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 "Plug 'junegunn/limelight.vim'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
+
+
+" Behavior
+" ========
+let mapleader = ' '
+syntax on
+set encoding=utf-8
+set nocompatible
+set spell spelllang=en_us,sl_si
+set directory=~/.cache/nvim/ " Swap directory
+set clipboard+=unnamedplus " Use system clipboard
+set updatetime=300 " Swap write interval [ms]
+set shortmess+=c " Don't pass messages to ins-completion-menu
+set hidden " Hide buffer
+set smartcase
+set mouse=n " Enable mouse in normal mode
+set cindent " smartindent
+set scrolloff=0 " Lines above/below cursor when scrolling
+autocmd FileType * setlocal formatoptions-=cro " Disable auto comment
+" Preserve cursor position
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |
+                        \ exe "normal! g`\"" | endif
+" Preserve folds
+autocmd BufWinLeave * :norm zM<CR>
+augroup remember_folds
+        autocmd!
+        autocmd BufWinLeave ?* mkview 1
+        autocmd BufWinEnter ?* silent! loadview 1
+augroup END
+" Tabs
+" Number of spaces in a tab
+set expandtab " Spaces instead of tabs
+set shiftwidth=8
+set softtabstop=8
+set tabstop=8
+set wildmode=longest,list,full " :Command tab completion
+set splitbelow splitright " Splits open where you would expect them to
+" Center cursor on insert mode
+autocmd InsertEnter * norm zz
+" Remove trailing whitespace, blank lines on write
+function! <SID>StripTrailingWhitespaces()
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+        %s/\s\+$//e
+        0;/^\%(\_s*\S\)\@!/,$d
+        let @/=_s
+        call cursor(l, c)
+endfunction
+autocmd BufWritePre * silent! call <SID>StripTrailingWhitespaces()
 
 
 " Key map
@@ -218,6 +226,9 @@ nnoremap <leader>d :call <SID>show_documentation()<CR>
 nmap <leader>m <Plug>MarkdownPreview
 nmap <leader><S-m> <Plug>StopMarkdownPreview
 
+" [fzf.vim]
+" ---------
+
 
 " Appearance
 " ==========
@@ -229,6 +240,7 @@ set t_Co=256 " *-256color terminals compatibility
 colorscheme atom " ayu jellybeans
 set cursorline
 set cursorcolumn
+
 
 " File specific auto commands
 " ===========================
