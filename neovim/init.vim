@@ -79,10 +79,10 @@ autocmd FileType * setlocal formatoptions-=cro " Disable auto comment
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |
                         \ exe "normal! g`\"" | endif
 " Preserve folds
-autocmd BufWinLeave * :norm zM<CR>
+"autocmd BufWinLeave * silent! :norm zM<CR>
 augroup remember_folds
         autocmd!
-        autocmd BufWinLeave ?* mkview 1
+        autocmd BufWinLeave ?* silent! mkview 1
         autocmd BufWinEnter ?* silent! loadview 1
 augroup END
 " Tabs
@@ -222,12 +222,26 @@ nnoremap <leader>d :call <SID>show_documentation()<CR>
 "xmap <silent> <TAB> <Plug>(coc-range-select)
 
 " [markdown-preview]
-" ------------------
 nmap <leader>m <Plug>MarkdownPreview
 nmap <leader><S-m> <Plug>StopMarkdownPreview
 
 " [fzf.vim]
-" ---------
+" TODO (learn) Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+" TODO (remap) Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+" Path completion with custom source command
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
+" TODO (fix) Word completion with custom spec with popup layout option
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
+
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fr :Rg<CR>
 
 
 " Appearance
@@ -248,6 +262,22 @@ autocmd BufWritePost $HOME/.local/src/dwmblocks/scripts/* :!pkill -RTMIN+0 dwmbl
 
 " Plug-in configuration
 " =====================
+" fzf.vim
+" -------
+" Command overrides
+let g:fzf_preview_window = 'right:60%'
+let g:fzf_buffers_jump = 1 " Jump to the existing window if possible
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+let g:fzf_tags_command = 'ctags -R'
+let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+command! -bang -nargs=? -complete=dir Files
+                        \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* Rg
+                        \ call fzf#vim#grep(
+                        \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+                        \   fzf#vim#with_preview(), <bang>0)
+" TODO airline FZF
+
 " vista
 " -----
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
