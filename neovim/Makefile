@@ -7,7 +7,7 @@ uninstall:
 	rm -rf "$(CONFIGDIR)" "$(COCDIR)"
 
 dependencies:
-	yay --needed --noconfirm -S git neovim ruby python yarn nodejs npm xdotool ctags clang
+	yay --needed --noconfirm -S git neovim ruby python yarn nodejs npm xdotool ctags clang fzf
 	gem install neovim
 
 config:
