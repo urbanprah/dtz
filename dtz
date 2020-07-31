@@ -90,7 +90,7 @@ _unlink_prompt() {
 _package() {
         [ ! -e "$PACKAGES" ] && echo "'$PACKAGES' not found" && return 1
         [ "$1" == "remove" ] && remove=1 || remove=0
-        [ $remove -eq 0 ] && cmd="-S" || cmd="-Rsn"
+        [ $remove -eq 0 ] && cmd="-Sy" || cmd="-Rsn"
         package="$2"
         exists="$(grep -x "$package" "$PACKAGES")"
 
@@ -106,7 +106,7 @@ _package() {
 }
 
 _install() {
-        [ ! -e "$PACKAGES" ] && echo "'$PACKAGES' not found" || $AUR_HELPER -S --needed - < "$PACKAGES"
+        [ ! -e "$PACKAGES" ] && echo "'$PACKAGES' not found" || $AUR_HELPER -Sy --needed - < "$PACKAGES"
 }
 
 
@@ -125,4 +125,3 @@ while getopts ":LUihAl:u:a:r:n::" f; do
         esac
 done
 [ $# -eq 0 ] && _handler "link"
-
