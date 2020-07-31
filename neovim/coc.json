@@ -1,12 +1,13 @@
 {
   "dependencies": {
-    "coc-clangd": ">=0.4.1",
+    "coc-clangd": ">=0.4.7",
     "coc-css": ">=1.2.3",
     "coc-html": ">=1.2.4",
-    "coc-java": ">=1.4.10",
-    "coc-json": ">=1.2.5",
+    "coc-java": ">=1.4.11",
+    "coc-json": ">=1.2.6",
     "coc-omnisharp": ">=0.0.26",
-    "coc-pyright": ">=1.1.35",
+    "coc-pyright": ">=1.1.40",
+    "coc-sh": ">=0.4.0",
     "coc-snippets": ">=2.1.26",
     "coc-svg": ">=0.0.13",
     "coc-tsserver": ">=1.5.1"

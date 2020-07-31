@@ -32,13 +32,19 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'} "
 "Plug 'KabbAmine/vCoolor.vim' " --> system color picker
 "Plug 'terryma/vim-multiple-cursors'
 "Plug 'easymotion/vim-easymotion' " Big meh
-"Plug 'tpope/vim-fugitive' # TODO
 Plug 'tpope/vim-commentary'
 "Plug 'preservim/nerdcommenter'
 "Plug 'tpope/vim-classpath' " JVM languages path (gf, :find)
 "Plug 'tpope/vim-capslock' " virtual CAPSLOCK (esc, CAPSLOCK)
 
+" TODO: git plugin
+"Plug 'tpope/vim-fugitive'
+"Plug 'mhinz/vim-signify'
+"Plug 'airblade/vim-gitgutter'
+"Plug 'rhysd/git-messenger.git'
+
 " Filetype specific
+Plug 'mzlogin/vim-smali'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 "Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 "Plug 'myhere/vim-nodejs-complete'
@@ -88,13 +94,13 @@ augroup END
 " Tabs
 " Number of spaces in a tab
 set expandtab " Spaces instead of tabs
-set shiftwidth=8
-set softtabstop=8
-set tabstop=8
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 set wildmode=longest,list,full " :Command tab completion
 set splitbelow splitright " Splits open where you would expect them to
 " Center cursor on insert mode
-autocmd InsertEnter * norm zz
+"autocmd InsertEnter * norm zz
 " Remove trailing whitespace, blank lines on write
 function! <SID>StripTrailingWhitespaces()
         let _s=@/
@@ -178,7 +184,7 @@ nnoremap <silent> <leader>c  :<C-u>CocList commands<cr>
 " Symbol list
 nnoremap <silent> <leader>o  :<C-u>CocList outline<cr>
 " TODO (difference from previous) Leader symbols.
-nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
+"nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
 " Navigate symbols
 nnoremap <silent> <leader>j  :<C-u>CocNext<CR>
 nnoremap <silent> <leader>k  :<C-u>CocPrev<CR>
@@ -251,7 +257,7 @@ set signcolumn=yes " Column left of line numbers
 set number relativenumber " Line numbers
 set termguicolors " Use true colors
 set t_Co=256 " *-256color terminals compatibility
-colorscheme atom " ayu jellybeans
+colorscheme gruvbox " ayu jellybeans
 set cursorline
 set cursorcolumn
 
@@ -330,7 +336,7 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 1 " Markdown preview available for all file types
 let g:mkdp_open_to_the_world = 0
 let g:mkdp_open_ip = ''
-let g:mkdp_browser = ''
+let g:mkdp_browser = 'qutebrowser'
 let g:mkdp_echo_preview_url = 0
 let g:mkdp_browserfunc = ''
 let g:mkdp_markdown_css = ''
